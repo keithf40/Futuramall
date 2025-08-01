@@ -9,11 +9,12 @@ TagManager:
   - canPickUp
   - pickable
   - Pickupable
+  - lb_groundTarget
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - holdLayer
   - Water
   - UI
   - 

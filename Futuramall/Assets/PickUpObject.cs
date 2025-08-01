@@ -14,20 +14,18 @@ public class PickUpObject : MonoBehaviour
     {
         var t = transform;
         var pressedE = Input.GetKeyDown(KeyCode.E);
-        if (heldObject)
+        if (pressedE)
         {
-            if (pressedE)
+            if(heldObject != null)
             {
                 var rigidBody = heldObject.GetComponent<Rigidbody>();
                 rigidBody.linearDamping = 1f;
                 rigidBody.useGravity = true;
+                rigidBody.isKinematic = false;
                 rigidBody.constraints = RigidbodyConstraints.None;
                 heldObject = null;
             }
-        }
-        else
-        {
-            if (pressedE)
+            else
             {
                 var hits = Physics.SphereCastAll(t.position + t.forward, radius, t.forward, radius);
                 var hitIndex = Array.FindIndex(hits, hit => hit.transform.tag == "Pickupable");
@@ -40,6 +38,8 @@ public class PickUpObject : MonoBehaviour
                     rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
                     rigidBody.linearDamping = 25f;
                     rigidBody.useGravity = false;
+                    rigidBody.isKinematic = true;
+
                 }
             }
         }
@@ -47,11 +47,11 @@ public class PickUpObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var t = transform;
-        var rigidBody = heldObject.GetComponent<Rigidbody>();
-        var moveTo = t.position + distance * t.forward + height * t.up;
-        var difference = moveTo - heldObject.transform.position;
-        rigidBody.AddForce(difference * 500);
-        heldObject.transform.rotation = t.rotation;
+        if(heldObject != null)
+        {
+            var t = transform;
+            heldObject.transform.position = t.position + distance * t.forward + height * t.up;
+            heldObject.transform.rotation = t.rotation;
+        }
     }
 }

@@ -9,7 +9,7 @@ private Rigidbody grabbedRigidbody;
 
 void Update()
 {
-if (Input.GetMouseButtonDown(0)) // Left mouse button to grab/release
+if (Input.GetKeyDown(KeyCode.E)) // Left mouse button to grab/release
 {
 if (grabbedObject == null)
 {
