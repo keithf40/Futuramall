@@ -10,6 +10,7 @@ TagManager:
   - pickable
   - Pickupable
   - lb_groundTarget
+  - Water
   layers:
   - Default
   - TransparentFX
