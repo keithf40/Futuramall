@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class WorldCanvasController : MonoBehaviour
 {
-    public Camera playerCamera;         // Assign Main Camera
-    public float distance = 2.0f;       // Distance in front of player
-    public GameObject canvasRoot;       // The GameObject holding your Canvas
+    [Header("Canvas Settings")]
+    public Camera playerCamera;           // Assign Main Camera
+    public float distance = 2.0f;         // Distance in front of player
+    public GameObject canvasRoot;         // The GameObject holding your Canvas
+
+    [Header("Input Settings")]
+    public bool enableKeyboardToggle = true; // Can this canvas be toggled by key?
+    public KeyCode toggleKey = KeyCode.None; // Assign key in Inspector (optional)
 
     private bool isVisible = false;
 
@@ -16,7 +21,7 @@ public class WorldCanvasController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (enableKeyboardToggle && toggleKey != KeyCode.None && Input.GetKeyDown(toggleKey))
         {
             ToggleCanvas();
         }
@@ -25,13 +30,9 @@ public class WorldCanvasController : MonoBehaviour
     public void ToggleCanvas()
     {
         if (!isVisible)
-        {
             ShowCanvas();
-        }
         else
-        {
             HideCanvas();
-        }
     }
 
     public void ShowCanvas()
@@ -39,14 +40,12 @@ public class WorldCanvasController : MonoBehaviour
         isVisible = true;
         canvasRoot.SetActive(true);
 
-        // Position in front of camera
         Vector3 forward = playerCamera.transform.forward;
         Vector3 spawnPosition = playerCamera.transform.position + forward * distance;
         canvasRoot.transform.position = spawnPosition;
 
-        // Rotate to face camera (only on Y axis if you want it flat)
         Vector3 lookDir = canvasRoot.transform.position - playerCamera.transform.position;
-        lookDir.y = 0; // Optional: keep upright
+        lookDir.y = 0;
         canvasRoot.transform.rotation = Quaternion.LookRotation(lookDir);
     }
 
